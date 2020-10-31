@@ -1,14 +1,14 @@
 <template>
   <div class="add-form pure-form">
     <div class="f-input">
-      <input 
-        type="text" 
+      <input
+        type="text"
         v-model="keyName"
         v-if="needName"
-        class="f-input-m" 
+        class="f-input-m"
         placeholder="name">
       <select v-model="formatSelected" class="f-input-m">
-        <option 
+        <option
           v-for="(item, index) in formats"
           :value="item"
           :key="index">
@@ -19,7 +19,7 @@
         <b>:</b>
       </span>
 
-      <template v-if="formatSelected !='array' && formatSelected != 'object'">
+      <template v-if="formatSelected !='array' && formatSelected !='List'">
         <input
           type="text"
           v-model="valName"
@@ -49,12 +49,12 @@
     </div>
 
     <div class="f-btns">
-      <button 
-        class="pure-button f-confirm" 
+      <button
+        class="pure-button f-confirm"
         @click="confirm">
         {{ this.formBtnText.confirmText }}
       </button>
-      <button 
+      <button
         class="pure-button"
         @click="cancel">
         {{ this.formBtnText.cancelText }}
@@ -68,7 +68,7 @@ export default {
   name: 'ItemAddForm',
   data () {
     return {
-      formats: ['string', 'array', 'object', 'number', 'boolean'],
+      formats: ['string', 'number', 'boolean', 'List', 'Reference' ],
       formatSelected: 'string',
       //--
       keyName: '',
@@ -84,7 +84,7 @@ export default {
   methods: {
     confirm: function() {
       let val = null;
-      if (this.formatSelected === 'array' || this.formatSelected === 'object') {
+      if (this.formatSelected === 'array' || this.formatSelected ==='List') {
         val = [];
       } else {
         val = this.valName;

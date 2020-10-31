@@ -7,7 +7,7 @@
           :key="`${member.type}${index}`"
           :class="['array-item', {'hide-item': hideMyItem[index] == true}]"
         >
-          <p v-if="member.type !== 'object' && member.type !== 'array'">
+          <p v-if="member.type !=='List' && member.type !== 'array'">
             <input
               type="text"
               v-model="member.remark"
@@ -38,10 +38,10 @@
               {{member.type.toUpperCase()}}
               <i
                 class="collapse-down v-json-edit-icon-arrow_drop_down"
-                v-if="member.type == 'object' || member.type == 'array'"
+                v-if="member.type =='List' || member.type == 'array'"
                 @click="closeBlock(index, $event)"
               ></i>
-              <i v-if="member.type == 'object'">{{'{' + member.childParams.length + '}'}}</i>
+              <i v-if="member.type =='List'">{{'{' + member.childParams.length + '}'}}</i>
               <i v-if="member.type == 'array'">{{'[' + member.childParams.length + ']'}}</i>
             </span>
 
@@ -50,7 +50,7 @@
                 <array-view :parsedData="member.childParams || []" v-model="member.childParams"></array-view>
               </template>
 
-              <template v-if="member.type == 'object'">
+              <template v-if="member.type =='List'">
                 <json-view :parsedData="member.childParams || {}" v-model="member.childParams"></json-view>
               </template>
             </span>
@@ -85,7 +85,7 @@ export default {
   props: ["parsedData"],
   data: function() {
     return {
-      formats: ["string", "array", "object", "number", "boolean"],
+      formats: ["string", "number", "boolean", "List", "Reference"],
       flowData: this.parsedData,
       toAddItem: false,
       hideMyItem: {}
@@ -128,7 +128,7 @@ export default {
         name: obj.key,
         type: obj.type
       };
-      if (obj.type == "array" || obj.type == "object") {
+      if (obj.type == "array" || obj.type == "List") {
         oj.childParams = obj.val;
         oj.remark = null;
       } else {
@@ -146,7 +146,7 @@ export default {
     },
 
     itemTypeChange: function(item) {
-      if (item.type === "array" || item.type === "object") {
+      if (item.type === "array" || item.type === "List") {
         item.childParams = [];
         item.remark = null;
       }

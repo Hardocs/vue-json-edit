@@ -16,14 +16,14 @@
           />
           <i
             class="collapse-down v-json-edit-icon-arrow_drop_down"
-            v-if="item.type == 'object' || item.type == 'array'"
+            v-if="item.type =='List' || item.type == 'array'"
             @click="closeBlock(index, $event)"
           ></i>
-          <i v-if="item.type == 'object'" class="i-type">{{'{' + item.childParams.length + '}'}}</i>
+          <i v-if="item.type =='List'" class="i-type">{{'{' + item.childParams.length + '}'}}</i>
           <i v-if="item.type == 'array'" class="i-type">{{'[' + item.childParams.length + ']'}}</i>
         </span>
         <span class="json-val">
-          <template v-if="item.type == 'object'">
+          <template v-if="item.type =='List'">
             <json-view :parsedData="item.childParams" v-model="item.childParams"></json-view>
           </template>
 
@@ -87,7 +87,7 @@ export default {
   props: { parsedData: {} },
   data() {
     return {
-      formats: ["string", "array", "object", "number", "boolean"],
+      formats: ["string", "number", "boolean", "List", "Reference"],
       flowData: this.parsedData,
       toAddItem: false,
       hideMyBlock: {}
@@ -135,7 +135,7 @@ export default {
         name: obj.key,
         type: obj.type
       };
-      if (obj.type == "array" || obj.type == "object") {
+      if (obj.type == "array" || obj.type == "List") {
         oj.childParams = obj.val;
         oj.remark = null;
       } else {
@@ -166,7 +166,7 @@ export default {
     },
 
     itemTypeChange: function(item) {
-      if (item.type === "array" || item.type === "object") {
+      if (item.type === "array" || item.type === "List") {
         item.childParams = [];
         item.remark = null;
       }

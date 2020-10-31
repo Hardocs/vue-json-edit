@@ -1,6 +1,6 @@
 <template>
-  <json-view 
-    :parsedData="parsedData" 
+  <json-view
+    :parsedData="parsedData"
     v-model="parsedData"></json-view>
 </template>
 
@@ -13,12 +13,12 @@ export default {
   props: {
     objData: {
       type: [Object, Array],
-      required: true 
+      required: true
     },
     options: {
       type: Object,
       default: function () {
-        return { 
+        return {
           confirmText: "confirm",
           cancelText: "cancel"
         }
@@ -33,7 +33,7 @@ export default {
   data () {
     return {
       parsedData: [],
-      wrapperType: 'object'
+      wrapperType:'List'
     };
   },
   created () {
@@ -48,13 +48,13 @@ export default {
     },
     parsedData: {
       handler(newValue, oldValue) {
-        
+
         if (JSON.stringify(newValue) === JSON.stringify(this.lastParsedData)) {
           return;
         }
 
         this.lastParsedData = cloneDeep(newValue);
-        
+
         this.$emit("input", this.makeJson(this.parsedData));
       },
       deep: true
@@ -72,7 +72,7 @@ export default {
           let val = json[k];
           let parsedVal = val;
 
-          if (this.getType(val) == "object") {
+          if (this.getType(val) == "List") {
             parsedVal = parseJson(val);
 
           } else if (this.getType(val) == "array") {
@@ -84,7 +84,7 @@ export default {
             type: this.getType(val)
           };
 
-          if (opt.type == "array" || opt.type == "object") {
+          if (opt.type == "array" || opt.type == "List") {
             opt.childParams = parsedVal;
             opt.remark = null;
           } else {
@@ -103,7 +103,7 @@ export default {
         for (let i = 0; i < arrayObj.length; ++i) {
           let val = arrayObj[i];
           let parsedVal = val;
-          if (this.getType(val) == "object") {
+          if (this.getType(val) == "List") {
             parsedVal = parseJson(val);
 
           } else if (this.getType(val) == "array") {
@@ -115,7 +115,7 @@ export default {
             type: this.getType(val)
           };
 
-          if (opt.type == "array" || opt.type == "object") {
+          if (opt.type == "array" || opt.type == "List") {
             opt.childParams = parsedVal;
             opt.remark = null;
           } else {
@@ -136,8 +136,8 @@ export default {
             this.wrapperType = 'array';
             r = parseArray(data);
             break;
-          case 'object':
-            this.wrapperType = 'object';
+          case'List':
+            this.wrapperType ='List';
             r = parseJson(data);
             break;
         }
@@ -153,7 +153,7 @@ export default {
           return "array";
           break;
         case "[object Object]":
-          return "object";
+          return "List";
           break;
         case "[object Null]":
         case "[object Function]":
@@ -175,7 +175,7 @@ export default {
           key = el.name;
           if (el.type == "array") {
             val = revertWithArray(el.childParams);
-          } else if (el.type == "object") {
+          } else if (el.type == "List") {
             val = revertWithObj(el.childParams);
           } else {
             val = el.remark;
@@ -193,7 +193,7 @@ export default {
           let r;
           if (el.type == "array") {
             r = revertWithArray(el.childParams);
-          } else if (el.type == "object") {
+          } else if (el.type == "List") {
             r = revertWithObj(el.childParams);
           } else {
             r = el.remark;
@@ -208,10 +208,10 @@ export default {
         let r = null;
         switch(this.wrapperType) {
           case 'array':
-            
+
             r = revertWithArray(data);
             break;
-          case 'object':
+          case'List':
             r = revertWithObj(data);
             break;
         }
