@@ -2,10 +2,6 @@
 
 > Visual JSON Editor built as an vue component. Provides a basic GUI
 
-
-</br>
-
-
 ## Local development of this module with Yarn
                                  
 Note that this is a little different from some other modules, such as our habitat-client. These steps, though, accomplish the same expected result.
@@ -22,14 +18,10 @@ When you change code in this module,
 - if your app is running in dev mode, it will restart, run now with the changed module
 - or if you are building your app, build it to pick up the changed module automatically
 
-
 ## Getting Started
 ```
 npm install vue-json-edit --save
 ```
-
-</br>
-
 
 ## Usage
 
@@ -47,9 +39,7 @@ Vue.use(JsonEditor)
 * options
     * confirmText: strings of the confirm button
     * cancelText: strings of the cancel button
-
-
-</br>
+  
 
 ## Example
 Single file component
@@ -82,7 +72,7 @@ export default {
 </script> 
 ```
 
-</br>
+
 
 
 

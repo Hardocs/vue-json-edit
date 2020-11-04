@@ -1,16 +1,26 @@
 <template>
   <json-view
     :parsedData="parsedData"
-    v-model="parsedData"></json-view>
+    v-model="parsedData"
+    :insert="insert"
+  >
+  </json-view>
 </template>
 
 <script>
 import JsonView from "./JsonView.vue";
 import cloneDeep from "lodash.clonedeep";
+import TempInsert from './TempInsert.vue';
+
 
 export default {
   name: "JsonEditor",
   props: {
+    insert: {
+      type: Object,
+      default: null, // function () { return TempInsert },
+      required: false
+    },
     objData: {
       type: [Object, Array],
       required: true
@@ -24,6 +34,12 @@ export default {
         }
       },
     }
+  },
+  mounted () {
+    console.log ('jsonEditor:insert: ' + this.insert)
+  },
+  components: {
+    TempInsert
   },
   provide () {
     return {

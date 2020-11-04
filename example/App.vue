@@ -9,7 +9,8 @@
 							confirmText: 'confirm',
 							cancelText: 'cancel',
 						}"
-						:objData="jsonData" 
+						:objData="jsonData"
+            :insert="einsert"
 						v-model="jsonData" ></JsonEditor>
 				</div>
 			</div>
@@ -28,18 +29,21 @@
 
 <script>
 import hljs from 'highlight.js'
+import TempInsert from '../src/TempInsert.vue'
+import Vue from 'vue'
 
 export default {
 	name: 'app',
 	data: function() {
-		return {
+    return {
+      einsert: TempInsert,
 			jsonData: {
 				name: 'may',
 				age: null,
 				address: ['Panyu Shiqiao on Canton', 'Tianhe', {
 					city: 'forida meta 11'
 				}],
-				ohters: {
+				others: {
 					id: 1246,
 					joinTime: '2017-08-20. 10:20',
 					description: 'another'

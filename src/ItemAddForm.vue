@@ -1,6 +1,7 @@
 <template>
   <div class="add-form pure-form">
     <div class="f-input">
+      <div id="templates"></div>
       <input
         type="text"
         v-model="keyName"
@@ -64,20 +65,38 @@
 </template>
 
 <script>
+
+import RenderDynamicChild from './RenderDynamicChild.vue'
+import Vue from 'vue'
+
 export default {
   name: 'ItemAddForm',
   data () {
     return {
       formats: ['string', 'number', 'boolean', 'List', 'Reference' ],
       formatSelected: 'string',
-      //--
+      // --
       keyName: '',
       valName: ''
     };
   },
+  mounted () {
+    console.log('insert: ' +  this.insert)
+    if (this.insert) {
+      const holder = (new (Vue.extend(this.insert))).$mount('#templates')
+    }
+  },
+  components: {
+    RenderDynamicChild,
+  },
   props: {
     needName: {
       default: true
+    },
+    insert: {
+      type: Object,
+      required: false,
+      default: null
     }
   },
   inject: ['formBtnText'],

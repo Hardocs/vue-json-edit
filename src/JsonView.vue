@@ -24,7 +24,7 @@
         </span>
         <span class="json-val">
           <template v-if="item.type =='List'">
-            <json-view :parsedData="item.childParams" v-model="item.childParams"></json-view>
+            <json-view :insert="insert" :parsedData="item.childParams" v-model="item.childParams"></json-view>
           </template>
 
           <template v-else-if="item.type == 'array'">
@@ -71,7 +71,7 @@
       </div>
     </draggable>
 
-    <item-add-form v-if="toAddItem" @confirm="newItem" @cancel="cancelNewItem"></item-add-form>
+    <item-add-form v-if="toAddItem" :insert="insert" @confirm="newItem" @cancel="cancelNewItem"></item-add-form>
 
     <div class="block add-key" @click="addItem" v-if="!toAddItem">
       <i class="v-json-edit-icon-add"></i>
@@ -81,10 +81,18 @@
 
 <script>
 import ItemAddForm from "./ItemAddForm.vue";
+import TempInsert from './TempInsert.vue';
 
 export default {
   name: "JsonView",
-  props: { parsedData: {} },
+  props: {
+    parsedData: {},
+    insert: {
+      type: Object,
+      default: null, // function () { return TempInsert },
+      required: false
+    }
+  },
   data() {
     return {
       formats: ["string", "number", "boolean", "List", "Reference"],
