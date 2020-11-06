@@ -1,7 +1,10 @@
 <template>
   <div class="add-form pure-form">
     <div class="f-input">
-      <div id="templates"></div>
+<!--      <div id="templates"></div>-->
+      <div v-if="insertComponent">
+        <component :is="insertComponent" :templatesData="templatesData"></component>
+      </div>
       <input
         type="text"
         v-model="keyName"
@@ -66,13 +69,13 @@
 
 <script>
 
-import RenderDynamicChild from './RenderDynamicChild.vue'
 import Vue from 'vue'
 
 export default {
   name: 'ItemAddForm',
   data () {
     return {
+      insertComponent: null,
       formats: ['string', 'number', 'boolean', 'List', 'Reference' ],
       formatSelected: 'string',
       // --
@@ -81,22 +84,29 @@ export default {
     };
   },
   mounted () {
-    console.log('insert: ' +  this.insert)
-    if (this.insert) {
-      const holder = (new (Vue.extend(this.insert))).$mount('#templates')
+    console.log('itemsAddForm:templatesData: ' +  JSON.stringify(this.templatesData))
+    console.log('itemsAddForm:templatesInsert: ' +  JSON.stringify(this.templatesInsert))
+    if (this.templatesInsert) {
+      this.insertComponent = Vue.extend(this.templatesInsert)
     }
-  },
-  components: {
-    RenderDynamicChild,
+
+    // if (this.templatesInsert) {
+    //   const holder = (new (Vue.extend(this.templatesInsert))).$mount('#templates')
+    // }
   },
   props: {
     needName: {
       default: true
     },
-    insert: {
+    templatesInsert: {
       type: Object,
       required: false,
       default: null
+    },
+    templatesData: {
+      type: Object,
+      required: false,
+      default: function () { return { what: 'me worry'}}
     }
   },
   inject: ['formBtnText'],

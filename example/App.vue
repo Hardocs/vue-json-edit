@@ -3,14 +3,15 @@
 		<h1 class="t">Vue-Json-Edit</h1>
 		<div class="editor-w clearfix">
 			<div class="w-2">
-				<div class="editor">
+				<div class="editor" @template-selected="showEvent">
 					<JsonEditor
 						:options="{
 							confirmText: 'confirm',
 							cancelText: 'cancel',
 						}"
 						:objData="jsonData"
-            :insert="einsert"
+            :templatesInsert="templatesInsert"
+            :templatesData="templatesData"
 						v-model="jsonData" ></JsonEditor>
 				</div>
 			</div>
@@ -31,12 +32,22 @@
 import hljs from 'highlight.js'
 import TempInsert from '../src/TempInsert.vue'
 import Vue from 'vue'
-
+// formats: ['Template1', 'Template2', 'Template3', 'Template4', 'No Template'],
 export default {
 	name: 'app',
 	data: function() {
     return {
-      einsert: TempInsert,
+      templatesInsert: TempInsert,
+      templatesData: {
+        selections: [
+          'No Template',
+          'Template a',
+          'Template b',
+          'Template c',
+        ],
+        template: null,
+        store: this.$store,
+      },
 			jsonData: {
 				name: 'may',
 				age: null,
@@ -58,6 +69,21 @@ export default {
 		}
 	},
 	methods: {
+	  showEvent: function(event) {
+	    console.log('showEvent: '+ JSON.stringify(event))
+      this.templatesData.template = {
+	      name: event,
+        data: {
+          one: 'one',
+          two: 'two',
+          three: 'three',
+        }
+      }
+    },
+    clearEvent: function () {
+      console.log('clearEvent')
+      this.templatesData.template = null
+    },
 		//JSON format print
 		formatJson: function(txt, compress /*是否为压缩模式*/) {
 			/* 格式化JSON源码(对象转换为JSON文本) */
@@ -130,7 +156,11 @@ export default {
 			hljs.highlightBlock(target)
 		},
 	},
-	mounted: function() {
+  created() {
+    this.$root.$on('template-selected', (event) => { this.showEvent(event) })
+    this.$root.$on('clear-template', (event) => { this.clearEvent() })
+  },
+  mounted: function() {
 		let c = this.formatJson(JSON.stringify(this.jsonData))
 		this.drawResCode(c)
 	}

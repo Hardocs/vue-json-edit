@@ -2,7 +2,8 @@
   <json-view
     :parsedData="parsedData"
     v-model="parsedData"
-    :insert="insert"
+    :templatesInsert="templatesInsert"
+    :templatesData="templatesData"
   >
   </json-view>
 </template>
@@ -16,9 +17,14 @@ import TempInsert from './TempInsert.vue';
 export default {
   name: "JsonEditor",
   props: {
-    insert: {
+    templatesInsert: {
       type: Object,
-      default: null, // function () { return TempInsert },
+      default: null,
+      required: false
+    },
+    templatesData: {
+      type: Object,
+      default: null,
       required: false
     },
     objData: {
@@ -34,12 +40,6 @@ export default {
         }
       },
     }
-  },
-  mounted () {
-    console.log ('jsonEditor:insert: ' + this.insert)
-  },
-  components: {
-    TempInsert
   },
   provide () {
     return {
@@ -75,6 +75,9 @@ export default {
       },
       deep: true
     }
+  },
+  mounted: function () {
+    console.log('JsonEditor:templatesData: ' +  JSON.stringify(this.templatesData))
   },
   components: {
     "json-view": JsonView

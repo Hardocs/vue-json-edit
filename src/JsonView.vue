@@ -24,7 +24,12 @@
         </span>
         <span class="json-val">
           <template v-if="item.type =='List'">
-            <json-view :insert="insert" :parsedData="item.childParams" v-model="item.childParams"></json-view>
+            <json-view
+              :templatesInsert="templatesInsert"
+              :templates-data="templatesData"
+              :parsedData="item.childParams"
+              v-model="item.childParams"
+            ></json-view>
           </template>
 
           <template v-else-if="item.type == 'array'">
@@ -71,7 +76,12 @@
       </div>
     </draggable>
 
-    <item-add-form v-if="toAddItem" :insert="insert" @confirm="newItem" @cancel="cancelNewItem"></item-add-form>
+    <item-add-form v-if="toAddItem"
+                   :templatesInsert="templatesInsert"
+                   :templatesData="templatesData"
+                   @confirm="newItem"
+                   @cancel="cancelNewItem"
+    ></item-add-form>
 
     <div class="block add-key" @click="addItem" v-if="!toAddItem">
       <i class="v-json-edit-icon-add"></i>
@@ -87,9 +97,14 @@ export default {
   name: "JsonView",
   props: {
     parsedData: {},
-    insert: {
+    templatesInsert: {
       type: Object,
       default: null, // function () { return TempInsert },
+      required: false
+    },
+    templatesData: {
+      type: Object,
+      default: function () { return null },
       required: false
     }
   },
@@ -103,6 +118,9 @@ export default {
   },
   created() {
     this.flowData = this.parsedData || {};
+  },
+  mounted () {
+    console.log('JsonView:templatesData: ' +  JSON.stringify(this.templatesData))
   },
   watch: {
     parsedData: {
