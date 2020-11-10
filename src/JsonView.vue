@@ -169,11 +169,14 @@ export default {
         oj.remark = obj.val;
       }
 
+      console.log('newItem:oj: ' + JSON.stringify(oj))
+      console.log('newItem:flowData: ' + JSON.stringify(this.flowData))
       if (!oj.name) {
         alert("please must input a name!");
         return;
       } else {
         this.flowData.push(oj);
+        console.log('newItem:flowData:after: ' + JSON.stringify(this.flowData))
         this.$emit("input", this.flowData);
         this.cancelNewItem();
       }

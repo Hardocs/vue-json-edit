@@ -84,6 +84,7 @@ export default {
   },
   methods: {
     jsonParse: function (jsonStr) {
+      console.log('jsonParse:jsonStr: ' + JSON.stringify(jsonStr))
       const parseJson = json => {
         let result = [];
         let keys = Object.keys(json);
@@ -103,6 +104,8 @@ export default {
             type: this.getType(val)
           };
 
+          // console.log('jsonParse:opt: ' + JSON.stringify(opt) + ', parsedVal: ' + parsedVal)
+
           if (opt.type == "array" || opt.type == "List") {
             opt.childParams = parsedVal;
             opt.remark = null;
@@ -113,6 +116,7 @@ export default {
 
           result.push(opt);
         });
+        console.log('jsonParse:json: '+ JSON.stringify(json) + ',  result: ' + JSON.stringify(result))
         return result;
       };
 

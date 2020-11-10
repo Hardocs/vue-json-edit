@@ -84,6 +84,7 @@ export default {
     };
   },
   mounted () {
+    this.$root.$on('template-returned', (event) => { this.loadTemplate(event) })
     console.log('itemsAddForm:templatesData: ' +  JSON.stringify(this.templatesData))
     console.log('itemsAddForm:templatesInsert: ' +  JSON.stringify(this.templatesInsert))
     if (this.templatesInsert) {
@@ -111,10 +112,28 @@ export default {
   },
   inject: ['formBtnText'],
   methods: {
+    loadTemplate: function (objData) {
+      console.log('loadTemplate:objData: ' + JSON.stringify(objData))
+      // now we have the template in templateInsert -- how do we add it?
+      // first step, do a dummy of some kind? Or the real?
+      this.keyName = objData.name
+      this.formatSelected = 'List' // objData.data[0].type
+      this.valName = objData.data  // [0].value
+      // this.needName = false
+      this.confirm()
+
+      // objData.data[0].value.forEach (line => {
+      //   this.keyName = line.name
+      //   this.formatSelected = line.type
+      //   this.valName = line.value
+      //   this.confirm()
+      // })
+    },
     confirm: function() {
       let val = null;
       if (this.formatSelected === 'array' || this.formatSelected ==='List') {
-        val = [];
+        val = this.valName; //*todo* better way here
+        // val = [];
       } else {
         val = this.valName;
       }
@@ -124,6 +143,7 @@ export default {
         val: val,
         type: this.formatSelected
       };
+      console.log('confirm:objData: ' + JSON.stringify(objData))
 
       this.$emit('confirm', objData);
       this.keyName = '';

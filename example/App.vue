@@ -70,15 +70,49 @@ export default {
 	},
 	methods: {
 	  showEvent: function(event) {
-	    console.log('showEvent: '+ JSON.stringify(event))
-      this.templatesData.template = {
-	      name: event,
-        data: {
-          one: 'one',
-          two: 'two',
-          three: 'three',
-        }
+      console.log('showEvent: ' + JSON.stringify(event))
+      // this.templatesData.template
+      const templateData = {
+        name: event,
+        data: [
+          { name: 'wut', type: 'number', childParams: null, remark: 3},
+          { name:'quantity', type: 'string', childParams: null, remark: 'remarkable' },
+          // { quantity: 0 },
+          // { specifications: 'here a spec - longer?' }
+        ]
+        //
+        //   {
+        //   // templ: {
+        //         quantity: 0,
+        //         specifications: 'here a spec - longer?'
+        //   // },
+        // }
+
+      // { name: event, type: 'List', value:
+      //       [
+      //         // {name: 'quantity', type: 'number', value: 0 },
+      //         {name: 'quantity', type: 'number', value: 0 },
+      //         {name: 'specifications', type: 'string', value: 'here a spec - longer?'},
+      //       ]
+            //   {
+            //     quantity: 21 // {type: 'number', value: 0},
+            //   }
+              // {name: 'quantity', type: 'number', value: 0},
+              // {name: 'specifications', type: 'string', value: 'here a spec - longer?'},
+              // {
+              //   name: 'assets', type: 'List', value: [
+              //     {name: 'asset1', type: 'string', value: 'asset one'},
+              //     {name: 'asset2', type: 'string', value: 'asset two'},
+              //   ]
+              // }
+            // ]
+          // }
+        // ]
       }
+
+      // this.jsonData[templateData.name] = templateData.data
+      console.log ('new jsonData: ' + JSON.stringify(this.jsonData))
+      this.$root.$emit('template-returned', templateData)
     },
     clearEvent: function () {
       console.log('clearEvent')
