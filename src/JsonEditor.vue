@@ -77,7 +77,7 @@ export default {
     }
   },
   mounted: function () {
-    console.log('JsonEditor:templatesData: ' +  JSON.stringify(this.templatesData))
+    // console.log('JsonEditor:templatesData: ' +  JSON.stringify(this.templatesData))
   },
   components: {
     "json-view": JsonView

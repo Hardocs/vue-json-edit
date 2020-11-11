@@ -1,10 +1,12 @@
 <template>
   <div class="add-form pure-form">
     <div class="f-input">
-<!--      <div id="templates"></div>-->
-      <div v-if="insertComponent">
-        <component :is="insertComponent" :templatesData="templatesData"></component>
-      </div>
+
+      <!--      <div id="templates"></div>-->
+      <temp-insert :templatesData="templatesData"></temp-insert>
+<!--      <div v-if="insertComponent">-->
+<!--        <component :is="insertComponent" :templatesData="templatesData"></component>-->
+<!--      </div>-->
       <input
         type="text"
         v-model="keyName"
@@ -69,10 +71,13 @@
 
 <script>
 
-import Vue from 'vue'
+// import Vue from 'vue'
+import TempInsert from './TempInsert.vue'
+// import TempInsert from './TempInsert';
 
 export default {
   name: 'ItemAddForm',
+  components: {TempInsert},
   data () {
     return {
       insertComponent: null,
@@ -85,11 +90,11 @@ export default {
   },
   mounted () {
     this.$root.$on('template-returned', (event) => { this.loadTemplate(event) })
-    console.log('itemsAddForm:templatesData: ' +  JSON.stringify(this.templatesData))
-    console.log('itemsAddForm:templatesInsert: ' +  JSON.stringify(this.templatesInsert))
-    if (this.templatesInsert) {
-      this.insertComponent = Vue.extend(this.templatesInsert)
-    }
+    // console.log('itemsAddForm:templatesData: ' +  JSON.stringify(this.templatesData))
+    // console.log('itemsAddForm:templatesInsert: ' +  JSON.stringify(this.templatesInsert))
+    // if (this.templatesInsert) {
+    //   this.insertComponent = Vue.extend(this.templatesInsert)
+    // }
 
     // if (this.templatesInsert) {
     //   const holder = (new (Vue.extend(this.templatesInsert))).$mount('#templates')

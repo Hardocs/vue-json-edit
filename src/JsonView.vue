@@ -91,7 +91,7 @@
 
 <script>
 import ItemAddForm from "./ItemAddForm.vue";
-import TempInsert from './TempInsert.vue';
+// import TempInsert from './TempInsert.vue';
 
 export default {
   name: "JsonView",
@@ -120,7 +120,7 @@ export default {
     this.flowData = this.parsedData || {};
   },
   mounted () {
-    console.log('JsonView:templatesData: ' +  JSON.stringify(this.templatesData))
+    // console.log('JsonView:templatesData: ' +  JSON.stringify(this.templatesData))
   },
   watch: {
     parsedData: {

@@ -4,6 +4,7 @@
 		<div class="editor-w clearfix">
 			<div class="w-2">
 				<div class="editor" @template-selected="showEvent">
+          <h1>We're here, let's see it</h1>
 					<JsonEditor
 						:options="{
 							confirmText: 'confirm',
@@ -31,8 +32,7 @@
 <script>
 import hljs from 'highlight.js'
 import TempInsert from '../src/TempInsert.vue'
-import Vue from 'vue'
-// formats: ['Template1', 'Template2', 'Template3', 'Template4', 'No Template'],
+
 export default {
 	name: 'app',
 	data: function() {
