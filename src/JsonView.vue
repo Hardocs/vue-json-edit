@@ -83,15 +83,25 @@
                    @cancel="cancelNewItem"
     ></item-add-form>
 
+<!-- *todo* tighten and size these apropos, center all vertically -->
+    <div class="template-choices">
+      <p class="templates-introducer">New Item</p>
+    </div>
     <div class="block add-key" @click="addItem" v-if="!toAddItem">
       <i class="v-json-edit-icon-add"></i>
+    </div>
+    <div class="template-choices">
+      <p class="templates-introducer">or</p>
+    </div>
+    <div class="template-choices templates-introducer">
+      <temp-insert :templatesData="templatesData"></temp-insert>
     </div>
   </div>
 </template>
 
 <script>
 import ItemAddForm from "./ItemAddForm.vue";
-// import TempInsert from './TempInsert.vue';
+import TempInsert from './TempInsert.vue'
 
 export default {
   name: "JsonView",
@@ -131,7 +141,8 @@ export default {
   },
   components: {
     "item-add-form": ItemAddForm,
-    "array-view": () => import("./ArrayView.vue")
+    "array-view": () => import("./ArrayView.vue"),
+    TempInsert
   },
   methods: {
     delItem: function(parentDom, item, index) {
@@ -216,3 +227,12 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.template-choices {
+  display: inline-block;
+}
+.templates-introducer {
+  font-size: small;
+}
+</style>

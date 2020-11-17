@@ -1,13 +1,13 @@
 <template>
   <div class="f-input">
     <h2 v-if="!template">{{ msg }}</h2>
-    <div v-else>
-      <h2>Template: {{ template.name }}</h2>
-      <p>data: {{ JSON.stringify(template.data )}}</p>
-    </div>
+<!--    <div v-else>-->
+<!--      <h2>Template: {{ template.name }}</h2>-->
+<!--      <p>data: {{ JSON.stringify(template.data )}}</p>-->
+<!--    </div>-->
     <select @change="doSelect" v-model="templateSelected" class="f-input-m">
       <option
-        v-for="(item, index) in templatesData.selections"
+        v-for="(item, index) in allSelections"
         :value="item"
         :key="index">
         {{ item }}
@@ -21,6 +21,11 @@
 export default {
   name: "TempInsert",
   props: {
+    firstLine: {
+      type: String,
+      required: false,
+      default: 'Choose Template'
+    },
     templatesData: {
       type: Object,
       required: false,
@@ -35,7 +40,12 @@ export default {
     }
   },
   mounted: function () {
-    this.templateSelected = this.templatesData.selections[0]
+    this.templateSelected = this.firstLine
+  },
+  computed: {
+    allSelections: function () {
+      return [ this.firstLine ].concat(this.templatesData.selections)
+    }
   },
   methods: {
     doSelect: function () {
@@ -45,8 +55,7 @@ export default {
       console.log('passed store: ' + JSON.stringify(this.templatesData.store))
 */
       console.log('sel: '+ this.templateSelected + ', sels0: ' + this.templatesData.selections[0])
-      if (this.templateSelected === this.templatesData.selections[0]) {
-        // this.template = null
+      if (this.templateSelected === this.firstLine) {
         this.$root.$emit('clear-template')
       } else {
         this.$root.$emit('template-selected', this.templateSelected)
@@ -63,7 +72,7 @@ export default {
   },
   data: function () {
     return {
-      msg: 'TempInsert',
+      msg: '', // if ever
       templateSelected: 'No Template',
       template: null
     }
