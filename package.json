@@ -1,8 +1,8 @@
 {
-  "name": "vue-json-edit",
-  "version": "1.4.3",
-  "description": "visual JSON editor built as an vue component",
-  "author": "Jinkin1995 <jinkin1995@gmail.com>",
+  "name": "@hardocs-project/vue-json-edit",
+  "version": "0.9.0",
+  "description": "Hardocs Project highly modified visual JSON editor built as an vue component",
+  "author": "Narration SD<narrationsd@gmail.com>, Jinkin1995 <jinkin1995@gmail.com>",
   "keywords": [
     "vue",
     "json"
@@ -11,17 +11,24 @@
   "module": "./dist/vue-json-edit.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jinkin1995/vue-json-edit.git"
+    "url": "git+https://github.com/Hardocs/vue-json-edit.git"
   },
-  "homepage": "https://github.com/jinkin1995/vue-json-edit",
+  "homepage": "https://github.com/Hardocs/vue-json-edit",
   "bugs": {
-    "url": "https://github.com/jinkin1995/vue-json-edit/issues"
+    "url": "https://github.com/Hardocs/vue-json-edit/issues"
   },
   "license": "Apache 2",
   "scripts": {
     "dev": "webpack-dev-server --open --config webpack.config.js",
     "example": "rm -rf ./example/dist/*.js && rm -rf ./example/dist/*.html && webpack --progress --config webpack.config.js",
-    "build": "webpack --progress --config webpack.build.js"
+    "build": "webpack --progress --config webpack.build.js",
+    "drypub": "npm publish --access public --dry-run",
+    "vpub": "npm publish --registry http://localhost:4873",
+    "ppub": "npm publish --access public",
+    "apub": "npm publish --access public --tag alpha",
+    "bpub": "npm publish --access public --tag beta",
+    "rpub": "npm publish --access public --tag rc",
+    "npub": "npm publish --access public --tag next"
   },
   "devDependencies": {
     "babel-core": "^6.26.3",

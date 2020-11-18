@@ -11,7 +11,7 @@
 <script>
 import JsonView from "./JsonView.vue";
 import cloneDeep from "lodash.clonedeep";
-import TempInsert from './TempInsert.vue';
+import TempInsert from './TemplateInsert.vue';
 
 
 export default {

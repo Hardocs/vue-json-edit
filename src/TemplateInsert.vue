@@ -40,6 +40,14 @@ export default {
     }
   },
   mounted: function () {
+    this.$root.$on('template-returned',
+      (event) => {
+        if (this.selected) {
+          this.selected = false
+          this.sendAddItem(event)
+          this.templateSelected = this.firstLine
+        }
+    })
     this.templateSelected = this.firstLine
   },
   computed: {
@@ -48,6 +56,9 @@ export default {
     }
   },
   methods: {
+    sendAddItem: function (event) {
+      this.$emit ('addItem', event)
+    },
     doSelect: function () {
 /*
       console.log('selected: ' + this.templateSelected)
@@ -55,6 +66,7 @@ export default {
       console.log('passed store: ' + JSON.stringify(this.templatesData.store))
 */
       console.log('sel: '+ this.templateSelected + ', sels0: ' + this.templatesData.selections[0])
+      this.selected = true
       if (this.templateSelected === this.firstLine) {
         this.$root.$emit('clear-template')
       } else {
@@ -74,7 +86,8 @@ export default {
     return {
       msg: '', // if ever
       templateSelected: 'No Template',
-      template: null
+      template: null,
+      selected: false
     }
   }
 }

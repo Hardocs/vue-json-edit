@@ -94,14 +94,17 @@
       <p class="templates-introducer">or</p>
     </div>
     <div class="template-choices templates-introducer">
-      <temp-insert :templatesData="templatesData"></temp-insert>
+      <template-insert
+        @addItem="loadTemplate"
+        :templatesData="templatesData">
+      </template-insert>
     </div>
   </div>
 </template>
 
 <script>
 import ItemAddForm from "./ItemAddForm.vue";
-import TempInsert from './TempInsert.vue'
+import TemplateInsert from './TemplateInsert.vue'
 
 export default {
   name: "JsonView",
@@ -109,7 +112,7 @@ export default {
     parsedData: {},
     templatesInsert: {
       type: Object,
-      default: null, // function () { return TempInsert },
+      default: null, // function () { return TemplateInsert },
       required: false
     },
     templatesData: {
@@ -127,6 +130,7 @@ export default {
     };
   },
   created() {
+    // this.$root.$on('template-returned', (event) => { this.loadTemplate(event) })
     this.flowData = this.parsedData || {};
   },
   mounted () {
@@ -142,9 +146,26 @@ export default {
   components: {
     "item-add-form": ItemAddForm,
     "array-view": () => import("./ArrayView.vue"),
-    TempInsert
+    TemplateInsert
   },
   methods: {
+    loadTemplate: function (objData) {
+      console.log('loadTemplate:objData: ' + JSON.stringify(objData))
+      // now we have the template in templateInsert -- how do we add it?
+      // first step, do a dummy of some kind? Or the real?
+
+      // this.keyName = objData.name
+      // this.formatSelected = 'List' // objData.data[0].type
+      // this.valName = objData.data  // [0].value
+
+      const newObj = {
+        key: objData.name,
+        type: 'List',
+        val: objData.data
+      }
+      // this.needName = false
+      this.newItem(newObj)
+    },
     delItem: function(parentDom, item, index) {
       this.flowData.splice(index, 1);
       if (this.hideMyBlock[index]) this.hideMyBlock[index] = false;
@@ -183,7 +204,7 @@ export default {
       console.log('newItem:oj: ' + JSON.stringify(oj))
       console.log('newItem:flowData: ' + JSON.stringify(this.flowData))
       if (!oj.name) {
-        alert("please must input a name!");
+        alert("You must input a name!");
         return;
       } else {
         this.flowData.push(oj);

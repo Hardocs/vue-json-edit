@@ -3,7 +3,7 @@ import JsonView from './JsonView.vue'
 import ArrayView from './ArrayView.vue'
 import draggable from 'vuedraggable'
 import PackageFile from '../package.json'
-// import TempInsert from './TempInsert.vue';
+// import TempInsert from './TemplateInsert.vue';
 
 const VERSION = PackageFile.version
 

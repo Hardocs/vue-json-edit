@@ -3,7 +3,7 @@
     <div class="f-input">
 
       <!--      <div id="templates"></div>-->
-      <temp-insert :templatesData="templatesData"></temp-insert>
+<!--      <template-insert :templatesData="templatesData"></template-insert>-->
 <!--      <div v-if="insertComponent">-->
 <!--        <component :is="insertComponent" :templatesData="templatesData"></component>-->
 <!--      </div>-->
@@ -72,12 +72,11 @@
 <script>
 
 // import Vue from 'vue'
-import TempInsert from './TempInsert.vue'
-// import TempInsert from './TempInsert';
+import TemplateInsert from './TemplateInsert.vue'
 
 export default {
   name: 'ItemAddForm',
-  components: {TempInsert},
+  components: { TemplateInsert },
   data () {
     return {
       insertComponent: null,
@@ -126,13 +125,6 @@ export default {
       this.valName = objData.data  // [0].value
       // this.needName = false
       this.confirm()
-
-      // objData.data[0].value.forEach (line => {
-      //   this.keyName = line.name
-      //   this.formatSelected = line.type
-      //   this.valName = line.value
-      //   this.confirm()
-      // })
     },
     confirm: function() {
       let val = null;
@@ -150,6 +142,7 @@ export default {
       };
       console.log('confirm:objData: ' + JSON.stringify(objData))
 
+      // this.$emit('new-item', objData);
       this.$emit('confirm', objData);
       this.keyName = '';
       this.valName = '';
