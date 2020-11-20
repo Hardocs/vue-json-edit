@@ -1,12 +1,6 @@
 <template>
   <div class="add-form pure-form">
     <div class="f-input">
-
-      <!--      <div id="templates"></div>-->
-<!--      <template-insert :templatesData="templatesData"></template-insert>-->
-<!--      <div v-if="insertComponent">-->
-<!--        <component :is="insertComponent" :templatesData="templatesData"></component>-->
-<!--      </div>-->
       <input
         type="text"
         v-model="keyName"
@@ -71,7 +65,9 @@
 
 <script>
 
-// import Vue from 'vue'
+// import Vue from 'vue' // for some reason of webpack probably, we can't do this,
+// thus TemplateInsert can't be added dynamically. So hard-coded in this vue-json-edit.
+// It's quite possible now that the editor is so customized that this no longer matters
 import TemplateInsert from './TemplateInsert.vue'
 
 export default {
@@ -89,15 +85,6 @@ export default {
   },
   mounted () {
     this.$root.$on('template-returned', (event) => { this.loadTemplate(event) })
-    // console.log('itemsAddForm:templatesData: ' +  JSON.stringify(this.templatesData))
-    // console.log('itemsAddForm:templatesInsert: ' +  JSON.stringify(this.templatesInsert))
-    // if (this.templatesInsert) {
-    //   this.insertComponent = Vue.extend(this.templatesInsert)
-    // }
-
-    // if (this.templatesInsert) {
-    //   const holder = (new (Vue.extend(this.templatesInsert))).$mount('#templates')
-    // }
   },
   props: {
     needName: {
@@ -117,9 +104,6 @@ export default {
   inject: ['formBtnText'],
   methods: {
     loadTemplate: function (objData) {
-      console.log('loadTemplate:objData: ' + JSON.stringify(objData))
-      // now we have the template in templateInsert -- how do we add it?
-      // first step, do a dummy of some kind? Or the real?
       this.keyName = objData.name
       this.formatSelected = 'List' // objData.data[0].type
       this.valName = objData.data  // [0].value
@@ -140,9 +124,7 @@ export default {
         val: val,
         type: this.formatSelected
       };
-      console.log('confirm:objData: ' + JSON.stringify(objData))
 
-      // this.$emit('new-item', objData);
       this.$emit('confirm', objData);
       this.keyName = '';
       this.valName = '';

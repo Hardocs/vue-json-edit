@@ -70,20 +70,18 @@ export default {
 	},
 	methods: {
 	  showTemplate: function(event) {
-      console.log('showTemplate: ' + JSON.stringify(event))
       const templateData = {
         name: event,
         data: [
           { name: 'wut', type: 'number', childParams: null, remark: 3},
           { name:'quantity', type: 'string', childParams: null, remark: 'remarkable' },
+          ]
       }
 
       // this.jsonData[templateData.name] = templateData.data
-      console.log ('new jsonData: ' + JSON.stringify(this.jsonData))
       this.$root.$emit('template-returned', templateData)
     },
     clearEvent: function () {
-      console.log('clearEvent')
       this.templatesData.template = null
     },
 		//JSON format print

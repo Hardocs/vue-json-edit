@@ -1,11 +1,7 @@
 <template>
   <div class="f-input">
-    <h2 v-if="!template">{{ msg }}</h2>
-<!--    <div v-else>-->
-<!--      <h2>Template: {{ template.name }}</h2>-->
-<!--      <p>data: {{ JSON.stringify(template.data )}}</p>-->
-<!--    </div>-->
-    <select @change="doSelect" v-model="templateSelected" class="f-input-m">
+    <p v-if="templatesData.selections.length === 0">{{ msg }}</p>
+    <select v-else @change="doSelect" v-model="templateSelected" class="f-input-m">
       <option
         v-for="(item, index) in allSelections"
         :value="item"
@@ -13,13 +9,12 @@
         {{ item }}
       </option>
     </select>
-
   </div>
 </template>
 
 <script>
 export default {
-  name: "TempInsert",
+  name: "TemplateInsert",
   props: {
     firstLine: {
       type: String,
@@ -31,15 +26,20 @@ export default {
       required: false,
       default: () => {
         return {
-          selections: [
-            "no selections",
-            'a selection'
-          ],
+          selections: [],
         }
       }
     }
   },
+  data: function () {
+    return {
+      msg: '(Please select a Standard)',
+      templateSelected: 'No Template',
+      selected: false
+    }
+  },
   mounted: function () {
+    this.templateSelected = this.firstLine // initially, returned to after event
     this.$root.$on('template-returned',
       (event) => {
         if (this.selected) {
@@ -48,7 +48,6 @@ export default {
           this.templateSelected = this.firstLine
         }
     })
-    this.templateSelected = this.firstLine
   },
   computed: {
     allSelections: function () {
@@ -60,12 +59,8 @@ export default {
       this.$emit ('addItem', event)
     },
     doSelect: function () {
-/*
-      console.log('selected: ' + this.templateSelected)
-      console.log('store: ' + JSON.stringify(this.$store))
-      console.log('passed store: ' + JSON.stringify(this.templatesData.store))
-*/
-      console.log('sel: '+ this.templateSelected + ', sels0: ' + this.templatesData.selections[0])
+      // n.b. this.selected is crucial to determine _which_ item's selection has
+      // been chosen...otherwise all instances would react, show the template...
       this.selected = true
       if (this.templateSelected === this.firstLine) {
         this.$root.$emit('clear-template')
@@ -73,30 +68,13 @@ export default {
         this.$root.$emit('template-selected', this.templateSelected)
       }
     }
-  },
-  watch: {
-    'templatesData.template': function () {
-      if(this.templatesData.template) {
-        console.log('selected template: ' + JSON.stringify(this.templatesData.template))
-        this.template = this.templatesData.template
-      }
-    }
-  },
-  data: function () {
-    return {
-      msg: '', // if ever
-      templateSelected: 'No Template',
-      template: null,
-      selected: false
-    }
   }
 }
 </script>
 
 <style scoped>
 
-.f-input,
-.f-btns {
+.f-input {
   display: inline-block;
 }
 

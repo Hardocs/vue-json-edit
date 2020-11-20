@@ -130,11 +130,7 @@ export default {
     };
   },
   created() {
-    // this.$root.$on('template-returned', (event) => { this.loadTemplate(event) })
     this.flowData = this.parsedData || {};
-  },
-  mounted () {
-    // console.log('JsonView:templatesData: ' +  JSON.stringify(this.templatesData))
   },
   watch: {
     parsedData: {
@@ -150,14 +146,6 @@ export default {
   },
   methods: {
     loadTemplate: function (objData) {
-      console.log('loadTemplate:objData: ' + JSON.stringify(objData))
-      // now we have the template in templateInsert -- how do we add it?
-      // first step, do a dummy of some kind? Or the real?
-
-      // this.keyName = objData.name
-      // this.formatSelected = 'List' // objData.data[0].type
-      // this.valName = objData.data  // [0].value
-
       const newObj = {
         key: objData.name,
         type: 'List',
@@ -201,14 +189,11 @@ export default {
         oj.remark = obj.val;
       }
 
-      console.log('newItem:oj: ' + JSON.stringify(oj))
-      console.log('newItem:flowData: ' + JSON.stringify(this.flowData))
       if (!oj.name) {
-        alert("You must input a name!");
+        alert("Please input a name for the item!");
         return;
       } else {
         this.flowData.push(oj);
-        console.log('newItem:flowData:after: ' + JSON.stringify(this.flowData))
         this.$emit("input", this.flowData);
         this.cancelNewItem();
       }
