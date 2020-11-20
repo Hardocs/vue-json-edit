@@ -84,6 +84,15 @@
     ></item-add-form>
 
 <!-- *todo* tighten and size these apropos, center all vertically -->
+    <div class="template-choices" v-if="fromTemplate">
+      <button
+        @click="anotherFromTemplate"
+        type="button" class="template-add-another"
+      >
+        Another {{ fromTemplate }}
+      </button>
+      <p class="templates-introducer template-choices">or</p>
+    </div>
     <div class="template-choices">
       <p class="templates-introducer">New Item</p>
     </div>
@@ -94,10 +103,11 @@
       <p class="templates-introducer">or</p>
     </div>
     <div class="template-choices templates-introducer">
-      <template-insert
-        @addItem="loadTemplate"
+      <TemplateInsert
+        @setSelected="setSelected"
+        @loadTemplate="loadTemplate"
         :templatesData="templatesData">
-      </template-insert>
+      </TemplateInsert>
     </div>
   </div>
 </template>
@@ -112,7 +122,7 @@ export default {
     parsedData: {},
     templatesInsert: {
       type: Object,
-      default: null, // function () { return TemplateInsert },
+      default: null,
       required: false
     },
     templatesData: {
@@ -123,6 +133,8 @@ export default {
   },
   data() {
     return {
+      fromTemplate: null,
+      selected: false,
       formats: ["string", "number", "boolean", "List", "Reference"],
       flowData: this.parsedData,
       toAddItem: false,
@@ -131,6 +143,17 @@ export default {
   },
   created() {
     this.flowData = this.parsedData || {};
+  },
+  mounted: function () {
+    this.$root.$on('template-returned',
+      (event) => {
+        console.log('JsonView:template-returned:selected:' + this.selected)
+        console.log('JsonView:template-returned:event:' + JSON.stringify(event))
+        if (this.selected) {
+          this.selected = false
+          this.loadTemplate(event)
+        }
+      })
   },
   watch: {
     parsedData: {
@@ -145,13 +168,22 @@ export default {
     TemplateInsert
   },
   methods: {
+    setSelected: function () {
+      console.log('setting selected')
+      this.selected = true
+    },
+    anotherFromTemplate: function () {
+      this.selected = true
+      console.log('setting another selected: ' + this.selected)
+      this.$root.$emit('template-selected', this.fromTemplate)
+    },
     loadTemplate: function (objData) {
       const newObj = {
         key: objData.name,
         type: 'List',
         val: objData.data
       }
-      // this.needName = false
+      this.fromTemplate = objData.name
       this.newItem(newObj)
     },
     delItem: function(parentDom, item, index) {
@@ -238,7 +270,17 @@ export default {
 .template-choices {
   display: inline-block;
 }
-.templates-introducer {
+.template-add-another {
+  cursor: pointer;
+  height: 22px;
+  border-color: blue;
+  border-width: 2px;
+  border-radius: 10px;
+  padding: 0 2px;
   font-size: small;
+}
+.templates-introducer {
+   font-size: small;
+  /*display: inline-block;*/
 }
 </style>

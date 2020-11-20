@@ -40,14 +40,14 @@ export default {
   },
   mounted: function () {
     this.templateSelected = this.firstLine // initially, returned to after event
-    this.$root.$on('template-returned',
-      (event) => {
-        if (this.selected) {
-          this.selected = false
-          this.sendAddItem(event)
-          this.templateSelected = this.firstLine
-        }
-    })
+    // this.$root.$on('template-returned',
+    //   (event) => {
+    //     if (this.selected) {
+    //       this.selected = false
+    //       this.sendAddItem(event)
+    //       this.templateSelected = this.firstLine
+    //     }
+    // })
   },
   computed: {
     allSelections: function () {
@@ -56,7 +56,7 @@ export default {
   },
   methods: {
     sendAddItem: function (event) {
-      this.$emit ('addItem', event)
+      this.$emit ('loadTemplate', event)
     },
     doSelect: function () {
       // n.b. this.selected is crucial to determine _which_ item's selection has
@@ -65,6 +65,7 @@ export default {
       if (this.templateSelected === this.firstLine) {
         this.$root.$emit('clear-template')
       } else {
+        this.$emit('setSelected')
         this.$root.$emit('template-selected', this.templateSelected)
       }
     }

@@ -1,13 +1,7 @@
 <template>
   <div class="add-form pure-form">
     <div class="f-input">
-      <input
-        type="text"
-        v-model="keyName"
-        v-if="needName"
-        class="f-input-m"
-        placeholder="name">
-      <select v-model="formatSelected" class="f-input-m">
+      <select v-model="formatSelected" class="f-input-m">-->
         <option
           v-for="(item, index) in formats"
           :value="item"
@@ -68,14 +62,12 @@
 // import Vue from 'vue' // for some reason of webpack probably, we can't do this,
 // thus TemplateInsert can't be added dynamically. So hard-coded in this vue-json-edit.
 // It's quite possible now that the editor is so customized that this no longer matters
-import TemplateInsert from './TemplateInsert.vue'
 
 export default {
   name: 'ItemAddForm',
-  components: { TemplateInsert },
   data () {
     return {
-      insertComponent: null,
+      fromTemplate: null,
       formats: ['string', 'number', 'boolean', 'List', 'Reference' ],
       formatSelected: 'string',
       // --
@@ -83,13 +75,7 @@ export default {
       valName: ''
     };
   },
-  mounted () {
-    this.$root.$on('template-returned', (event) => { this.loadTemplate(event) })
-  },
   props: {
-    needName: {
-      default: true
-    },
     templatesInsert: {
       type: Object,
       required: false,
@@ -103,13 +89,6 @@ export default {
   },
   inject: ['formBtnText'],
   methods: {
-    loadTemplate: function (objData) {
-      this.keyName = objData.name
-      this.formatSelected = 'List' // objData.data[0].type
-      this.valName = objData.data  // [0].value
-      // this.needName = false
-      this.confirm()
-    },
     confirm: function() {
       let val = null;
       if (this.formatSelected === 'array' || this.formatSelected ==='List') {
@@ -120,7 +99,7 @@ export default {
       }
 
       let objData = {
-        key: this.needName ? this.keyName : null,
+        key: null,
         val: val,
         type: this.formatSelected
       };
