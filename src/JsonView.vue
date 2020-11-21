@@ -28,6 +28,7 @@
               :templatesInsert="templatesInsert"
               :templates-data="templatesData"
               :parsedData="item.childParams"
+              :isFromTemplate="fromTemplate"
               v-model="item.childParams"
             ></json-view>
           </template>
@@ -75,39 +76,40 @@
         </div>
       </div>
     </draggable>
-
-    <item-add-form v-if="toAddItem"
-                   :templatesInsert="templatesInsert"
-                   :templatesData="templatesData"
-                   @confirm="newItem"
-                   @cancel="cancelNewItem"
-    ></item-add-form>
-
 <!-- *todo* tighten and size these apropos, center all vertically -->
-    <div class="template-choices" v-if="fromTemplate">
-      <button
-        @click="anotherFromTemplate"
-        type="button" class="template-add-another"
-      >
-        Another {{ fromTemplate }}
-      </button>
-      <p class="templates-introducer template-choices">or</p>
-    </div>
-    <div class="template-choices">
-      <p class="templates-introducer">New Item</p>
-    </div>
-    <div class="block add-key" @click="addItem" v-if="!toAddItem">
-      <i class="v-json-edit-icon-add"></i>
-    </div>
-    <div class="template-choices">
-      <p class="templates-introducer">or</p>
-    </div>
-    <div class="template-choices templates-introducer">
-      <TemplateInsert
-        @setSelected="setSelected"
-        @loadTemplate="loadTemplate"
-        :templatesData="templatesData">
-      </TemplateInsert>
+    <div v-if="!(flowData[0] && flowData[0].childParams && flowData[0].childParams[0].fromTemplate === null)">
+      <item-add-form v-if="toAddItem"
+                     :templatesInsert="templatesInsert"
+                     :templatesData="templatesData"
+                     @confirm="newItem"
+                     @cancel="cancelNewItem"
+      ></item-add-form>
+
+      <div class="template-choices" v-if="fromTemplate">
+        <button
+          @click="anotherFromTemplate"
+          type="button" class="template-add-another"
+        >
+          Another {{ fromTemplate }}
+        </button>
+        <p class="templates-introducer template-choices">or</p>
+      </div>
+      <div class="template-choices">
+        <p class="templates-introducer">New Item</p>
+      </div>
+      <div class="block add-key" @click="addItem" v-if="!toAddItem">
+        <i class="v-json-edit-icon-add"></i>
+      </div>
+      <div class="template-choices">
+        <p class="templates-introducer">or</p>
+      </div>
+      <div class="template-choices templates-introducer">
+        <TemplateInsert
+          @setSelected="setSelected"
+          @loadTemplate="loadTemplate"
+          :templatesData="templatesData">
+        </TemplateInsert>
+      </div>
     </div>
   </div>
 </template>
@@ -133,6 +135,7 @@ export default {
   },
   data() {
     return {
+      addCount: 1,
       fromTemplate: null,
       selected: false,
       formats: ["string", "number", "boolean", "List", "Reference"],
@@ -147,8 +150,6 @@ export default {
   mounted: function () {
     this.$root.$on('template-returned',
       (event) => {
-        console.log('JsonView:template-returned:selected:' + this.selected)
-        console.log('JsonView:template-returned:event:' + JSON.stringify(event))
         if (this.selected) {
           this.selected = false
           this.loadTemplate(event)
@@ -169,22 +170,21 @@ export default {
   },
   methods: {
     setSelected: function () {
-      console.log('setting selected')
       this.selected = true
     },
     anotherFromTemplate: function () {
       this.selected = true
-      console.log('setting another selected: ' + this.selected)
       this.$root.$emit('template-selected', this.fromTemplate)
     },
     loadTemplate: function (objData) {
       const newObj = {
-        key: objData.name,
+        key: objData.name + this.addCount++,
         type: 'List',
         val: objData.data
       }
       this.fromTemplate = objData.name
-      this.newItem(newObj)
+      this.toAddItem = false // templates are immutible -  we decided, wisely...
+      this.newItem(newObj, true)
     },
     delItem: function(parentDom, item, index) {
       this.flowData.splice(index, 1);
@@ -208,14 +208,15 @@ export default {
       this.toAddItem = false;
     },
 
-    newItem: function(obj) {
+    newItem: function(obj, fromTemplate = false) {
       let oj = {
         name: obj.key,
-        type: obj.type
+        type: obj.type,
+        fromTemplate: fromTemplate
       };
       if (obj.type == "array" || obj.type == "List") {
         oj.childParams = obj.val;
-        oj.remark = null;
+        oj.remark = fromTemplate // null;
       } else {
         oj.childParams = null;
         oj.remark = obj.val;
