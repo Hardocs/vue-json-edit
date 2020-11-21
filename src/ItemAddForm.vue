@@ -1,6 +1,11 @@
 <template>
   <div class="add-form pure-form">
     <div class="f-input">
+      <input
+        type="text"
+        v-model="keyName"
+        class="f-input-m"
+        placeholder="name">
       <select v-model="formatSelected" class="f-input-m">-->
         <option
           v-for="(item, index) in formats"
@@ -92,14 +97,14 @@ export default {
     confirm: function() {
       let val = null;
       if (this.formatSelected === 'array' || this.formatSelected ==='List') {
-        val = this.valName; //*todo* better way here
-        // val = [];
+        // val = this.valName; //*todo* better way here
+        val = [];
       } else {
         val = this.valName;
       }
 
       let objData = {
-        key: null,
+        key: this.keyName,
         val: val,
         type: this.formatSelected
       };
