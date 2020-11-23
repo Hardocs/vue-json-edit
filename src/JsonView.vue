@@ -5,6 +5,7 @@
         v-for="(item, index) in flowData"
         :key="`${item.type}${index}`"
         :class="['block', 'clearfix', {'hide-block': hideMyBlock[index] == true}]"
+        v-if="item.name !== '|#fromTemplate#|'"
       >
         <span class="json-key">
           <input
@@ -176,6 +177,11 @@ export default {
     "array-view": () => import("./ArrayView.vue"),
     TemplateInsert
   },
+  computed: {
+    isFromTemplate: function () {
+      return this.parsedData.some(item => item.name === '|#fromTemplate#|')
+    }
+  },
   methods: {
     setSelected: function () {
       this.selected = true
@@ -191,7 +197,7 @@ export default {
         val: objData.data
       }
       this.fromTemplate = objData.name
-      this.toAddItem = false // templates are immutible -  we decided, wisely...
+      this.toAddItem = false // templates are immutable -  we decided, wisely...
       this.newItem(newObj, true)
     },
     delItem: function(parentDom, item, index) {
@@ -228,6 +234,14 @@ export default {
       } else {
         oj.childParams = null;
         oj.remark = obj.val;
+      }
+      if (fromTemplate) {
+        oj.childParams.push ({
+          name: '|#fromTemplate#|',
+          childParams: null,
+          type: 'string',
+          remark: 'template'
+        })
       }
 
       if (!oj.name) {
