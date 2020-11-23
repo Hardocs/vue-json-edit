@@ -76,15 +76,18 @@
         </div>
       </div>
     </draggable>
-<!-- *todo* tighten and size these apropos, center all vertically -->
-    <div v-if="!(flowData[0] && flowData[0].childParams && flowData[0].childParams[0].fromTemplate === null)">
+
+<!-- *todo* style: tighten and size these apropos, center all vertically -->
+    <!--  this check makes from-Template items immutable, as we want...  -->
+<h3>fromTemplate: {{ fromTemplate }}</h3>
+
+    <div v-if="!isFromTemplate">
       <item-add-form v-if="toAddItem"
                      :templatesInsert="templatesInsert"
                      :templatesData="templatesData"
                      @confirm="newItem"
                      @cancel="cancelNewItem"
       ></item-add-form>
-
       <div class="template-choices" v-if="fromTemplate">
         <button
           @click="anotherFromTemplate"
@@ -122,6 +125,11 @@ export default {
   name: "JsonView",
   props: {
     parsedData: {},
+    isFromTemplate: {
+      type: String,
+      required: false,
+      default: () => null
+    },
     templatesInsert: {
       type: Object,
       default: null,

@@ -38,16 +38,8 @@ export default {
       selected: false
     }
   },
-  mounted: function () {
+  created: function () {
     this.templateSelected = this.firstLine // initially, returned to after event
-    // this.$root.$on('template-returned',
-    //   (event) => {
-    //     if (this.selected) {
-    //       this.selected = false
-    //       this.sendAddItem(event)
-    //       this.templateSelected = this.firstLine
-    //     }
-    // })
   },
   computed: {
     allSelections: function () {
