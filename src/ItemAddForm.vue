@@ -1,11 +1,13 @@
 <template>
   <div class="add-form pure-form">
-    <div class="f-input">
+    <div class="f-input" @keyup.enter="confirm" @keyup.escape="cancel">
       <input
         type="text"
         v-model="keyName"
         class="f-input-m"
-        placeholder="name">
+        placeholder="name"
+        ref="nameadd"
+      >
       <select v-model="formatSelected" class="f-input-m">-->
         <option
           v-for="(item, index) in formats"
@@ -72,7 +74,6 @@ export default {
   name: 'ItemAddForm',
   data () {
     return {
-      fromTemplate: null,
       formats: ['string', 'number', 'boolean', 'List', 'Reference' ],
       formatSelected: 'string',
       // --
@@ -93,14 +94,27 @@ export default {
     }
   },
   inject: ['formBtnText'],
+  mounted: function () {
+    this.$refs.nameadd.focus()
+  },
   methods: {
     confirm: function() {
       let val = null;
       if (this.formatSelected === 'array' || this.formatSelected ==='List') {
-        // val = this.valName; //*todo* better way here
         val = [];
       } else {
         val = this.valName;
+      }
+
+      // *todo* temp until loss of focus on fail is fixed
+      // *todo* might also point out we don't have an attempted duplicate names handling either
+      if(this.keyName === '') {
+        this.keyName = '(none)'
+      }
+
+      // *todo* this handling we might leave?
+      if(val === '') {
+        val = '(none)'
       }
 
       let objData = {

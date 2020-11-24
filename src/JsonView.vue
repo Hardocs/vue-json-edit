@@ -9,6 +9,7 @@
       >
         <span class="json-key">
           <input
+            :readonly="isFromTemplate"
             type="text"
             v-model="item.name"
             class="key-input"
@@ -29,7 +30,6 @@
               :templatesInsert="templatesInsert"
               :templates-data="templatesData"
               :parsedData="item.childParams"
-              :isFromTemplate="fromTemplate"
               v-model="item.childParams"
             ></json-view>
           </template>
@@ -66,8 +66,14 @@
           </template>
         </span>
 
-        <div class="tools">
-          <select v-model="item.type" class="tools-types" @change="itemTypeChange(item)">
+        <div class="tools" v-if="!isFromTemplate">
+          <!-- selects don't have readonly; only disabled, so that's why different... -->
+          <select
+            v-model="item.type"
+            class="tools-types"
+            @change="itemTypeChange(item)"
+            :disabled="childrenFromTemplate"
+          >
             <option v-for="(type, index) in formats" :value="type" :key="index">{{type}}</option>
           </select>
           <i class="dragbar v-json-edit-icon-drag"></i>
@@ -80,8 +86,6 @@
 
 <!-- *todo* style: tighten and size these apropos, center all vertically -->
     <!--  this check makes from-Template items immutable, as we want...  -->
-<h3>fromTemplate: {{ fromTemplate }}</h3>
-
     <div v-if="!isFromTemplate">
       <item-add-form v-if="toAddItem"
                      :templatesInsert="templatesInsert"
@@ -98,11 +102,13 @@
         </button>
         <p class="templates-introducer template-choices">or</p>
       </div>
-      <div class="template-choices">
-        <p class="templates-introducer">New Item</p>
-      </div>
-      <div class="block add-key" @click="addItem" v-if="!toAddItem">
-        <i class="v-json-edit-icon-add"></i>
+      <div class="point-it in-line-block" @click="addItem">
+        <div class="template-choices">
+          <p class="templates-introducer">New Item</p>
+        </div>
+        <div class="block add-key">
+          <i class="v-json-edit-icon-add"></i>
+        </div>
       </div>
       <div class="template-choices">
         <p class="templates-introducer">or</p>
@@ -126,11 +132,6 @@ export default {
   name: "JsonView",
   props: {
     parsedData: {},
-    isFromTemplate: {
-      type: String,
-      required: false,
-      default: () => null
-    },
     templatesInsert: {
       type: Object,
       default: null,
@@ -180,6 +181,11 @@ export default {
   computed: {
     isFromTemplate: function () {
       return this.parsedData.some(item => item.name === '|#fromTemplate#|')
+    },
+    childrenFromTemplate: function () {
+      return this.parsedData[0]
+        && this.parsedData[0].childParams
+        && this.parsedData[0].childParams.some(item => item.name === '|#fromTemplate#|')
     }
   },
   methods: {
@@ -305,5 +311,11 @@ export default {
 .templates-introducer {
    font-size: small;
   /*display: inline-block;*/
+}
+.point-it {
+  cursor: pointer;
+}
+.in-line-block {
+  display: inline-block;
 }
 </style>

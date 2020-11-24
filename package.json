@@ -1,6 +1,6 @@
 {
   "name": "@hardocs-project/vue-json-edit",
-  "version": "0.9.2",
+  "version": "0.9.4",
   "description": "Hardocs Project highly modified visual JSON editor built as an vue component",
   "author": "Narration SD<narrationsd@gmail.com>, Jinkin1995 <jinkin1995@gmail.com>",
   "keywords": [
