@@ -20,7 +20,7 @@
         <b>:</b>
       </span>
 
-      <template v-if="formatSelected !='array' && formatSelected !='List'">
+      <template v-if="formatSelected !='array' && formatSelected !='object'">
         <input
           type="text"
           v-model="valName"
@@ -74,7 +74,7 @@ export default {
   name: 'ItemAddForm',
   data () {
     return {
-      formats: ['string', 'number', 'boolean', 'List', 'Reference' ],
+      formats: ['string', 'number', 'boolean', 'object', 'array' ],
       formatSelected: 'string',
       // --
       keyName: '',
@@ -100,7 +100,7 @@ export default {
   methods: {
     confirm: function() {
       let val = null;
-      if (this.formatSelected === 'array' || this.formatSelected ==='List') {
+      if (this.formatSelected === 'array' || this.formatSelected ==='object') {
         val = [];
       } else {
         val = this.valName;

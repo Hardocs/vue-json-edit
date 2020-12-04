@@ -18,14 +18,14 @@
           />
           <i
             class="collapse-down v-json-edit-icon-arrow_drop_down"
-            v-if="item.type =='List' || item.type == 'array'"
+            v-if="item.type =='object' || item.type == 'array'"
             @click="closeBlock(index, $event)"
           ></i>
-          <i v-if="item.type =='List'" class="i-type">{{'{' + item.childParams.length + '}'}}</i>
+          <i v-if="item.type =='object'" class="i-type">{{'{' + item.childParams.length + '}'}}</i>
           <i v-if="item.type == 'array'" class="i-type">{{'[' + item.childParams.length + ']'}}</i>
         </span>
         <span class="json-val">
-          <template v-if="item.type =='List'">
+          <template v-if="item.type =='object'">
             <json-view
               :templatesInsert="templatesInsert"
               :templates-data="templatesData"
@@ -148,7 +148,7 @@ export default {
       addCount: 1,
       fromTemplate: null,
       selected: false,
-      formats: ["string", "number", "boolean", "List", "Reference"],
+      formats: ["string", "number", "boolean", "object", "array"],
       flowData: this.parsedData,
       toAddItem: false,
       hideMyBlock: {}
@@ -199,7 +199,7 @@ export default {
     loadTemplate: function (objData) {
       const newObj = {
         key: objData.name + this.addCount++,
-        type: 'List',
+        type: 'object',
         val: objData.data
       }
       this.fromTemplate = objData.name
@@ -234,7 +234,7 @@ export default {
         type: obj.type,
         fromTemplate: fromTemplate
       };
-      if (obj.type == "array" || obj.type == "List") {
+      if (obj.type == "array" || obj.type == "object") {
         oj.childParams = obj.val;
         oj.remark = fromTemplate // null;
       } else {
@@ -273,7 +273,7 @@ export default {
     },
 
     itemTypeChange: function(item) {
-      if (item.type === "array" || item.type === "List") {
+      if (item.type === "array" || item.type === "object") {
         item.childParams = [];
         item.remark = null;
       }

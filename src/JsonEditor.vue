@@ -49,7 +49,7 @@ export default {
   data () {
     return {
       parsedData: [],
-      wrapperType:'List'
+      wrapperType:'object'
     };
   },
   created () {
@@ -87,7 +87,7 @@ export default {
           let val = json[k];
           let parsedVal = val;
 
-          if (this.getType(val) == "List") {
+          if (this.getType(val) == "object") {
             parsedVal = parseJson(val);
 
           } else if (this.getType(val) == "array") {
@@ -99,7 +99,7 @@ export default {
             type: this.getType(val)
           };
 
-          if (opt.type == "array" || opt.type == "List") {
+          if (opt.type == "array" || opt.type == "object") {
             opt.childParams = parsedVal;
             opt.remark = null;
           } else {
@@ -118,7 +118,7 @@ export default {
         for (let i = 0; i < arrayObj.length; ++i) {
           let val = arrayObj[i];
           let parsedVal = val;
-          if (this.getType(val) == "List") {
+          if (this.getType(val) == "object") {
             parsedVal = parseJson(val);
 
           } else if (this.getType(val) == "array") {
@@ -130,7 +130,7 @@ export default {
             type: this.getType(val)
           };
 
-          if (opt.type == "array" || opt.type == "List") {
+          if (opt.type == "array" || opt.type == "object") {
             opt.childParams = parsedVal;
             opt.remark = null;
           } else {
@@ -151,8 +151,8 @@ export default {
             this.wrapperType = 'array';
             r = parseArray(data);
             break;
-          case'List':
-            this.wrapperType ='List';
+          case'object':
+            this.wrapperType ='object';
             r = parseJson(data);
             break;
         }
@@ -168,7 +168,7 @@ export default {
           return "array";
           break;
         case "[object Object]":
-          return "List";
+          return "object";
           break;
         case "[object Null]":
         case "[object Function]":
@@ -190,7 +190,7 @@ export default {
           key = el.name;
           if (el.type == "array") {
             val = revertWithArray(el.childParams);
-          } else if (el.type == "List") {
+          } else if (el.type == "object") {
             val = revertWithObj(el.childParams);
           } else {
             val = el.remark;
@@ -208,7 +208,7 @@ export default {
           let r;
           if (el.type == "array") {
             r = revertWithArray(el.childParams);
-          } else if (el.type == "List") {
+          } else if (el.type == "object") {
             r = revertWithObj(el.childParams);
           } else {
             r = el.remark;
@@ -226,7 +226,7 @@ export default {
 
             r = revertWithArray(data);
             break;
-          case'List':
+          case'object':
             r = revertWithObj(data);
             break;
         }
