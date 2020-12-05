@@ -1,6 +1,6 @@
 <template>
   <div class="f-input">
-    <p v-if="templatesData.selections.length === 0">{{ msg }}</p>
+    <p v-if="templatesData && templatesData.selections.length === 0">{{ msg }}</p>
     <select v-else @change="doSelect" v-model="templateSelected" class="f-input-m">
       <option
         v-for="(item, index) in allSelections"
@@ -43,7 +43,9 @@ export default {
   },
   computed: {
     allSelections: function () {
-      return [ this.firstLine ].concat(this.templatesData.selections)
+      return this.templatesData
+          ? [ this.firstLine ].concat(this.templatesData.selections)
+          : [ this.firstLine ]
     }
   },
   methods: {
