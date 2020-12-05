@@ -185,7 +185,7 @@ export default {
     childrenFromTemplate: function () {
       return this.parsedData[0]
         && this.parsedData[0].childParams
-        && this.parsedData[0].childParams.some(item => item.name === '|#fromTemplate#|')
+        && this.parsedData[0].childParams.some(item => item.fromTemplate === '|#fromTemplate#|')
     }
   },
   methods: {
