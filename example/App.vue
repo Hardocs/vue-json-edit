@@ -3,8 +3,8 @@
 		<h1 class="t">Vue-Json-Edit</h1>
 		<div class="editor-w clearfix">
 			<div class="w-2">
-				<div class="editor" @template-selected="showTemplate">
-          <h1>We're here, let's see it</h1>
+        <div class="editor" @template-selected="showTemplate">
+          <h1 class="redder">We're here, let's see it</h1>
 					<JsonEditor
 						:options="{
 							confirmText: 'confirm',
@@ -167,9 +167,11 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 @import url('../node_modules/highlight.js/styles/github.css');
-
+.redder {
+  color: #64e017;
+}
 </style>
 
 
